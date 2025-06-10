@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class firstController {
     @GetMapping("/")
     public String first() {
-        return "firstview";
+        return "pages/user/firstview";
     }
 }

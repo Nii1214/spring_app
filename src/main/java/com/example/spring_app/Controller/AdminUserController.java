@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.spring_app.entity.User;
 import com.example.spring_app.servise.UserService;
 
-
+// http://localhost:8080/adminuser
 
 @Controller
 public class AdminUserController {

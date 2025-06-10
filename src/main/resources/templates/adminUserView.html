@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring Bootの基礎を学ぼう</title>
+</head>
+<body>
+
+    <h2>ユーザー登録フォーム</h2>
+    <form th:action="@{/register}" method="post">
+        <div>
+            <label for="user_name">ユーザー名：</label>
+            <input type="text" id="user_name" name="user_name" th:value="${userName}">
+        </div>
+
+        <div>
+            <label for="password">パスワード：</label>
+            <input type="password" id="password" name="password">
+        </div>
+
+        <div>
+            <label for="role_id">ロール：</label>
+            <select id="role_id" name="role_id">
+                <option value="1" th:selected="${roleId == 1}">一般ユーザー</option>
+                <option value="2" th:selected="${roleId == 2}">管理者ユーザー</option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">登録</button>
+        </div>
+    </form>
+
+    <!-- メッセージ表示 -->
+    <p th:if="${successMessage}" th:text="${successMessage}" style="color: green;"></p>
+    <p th:if="${failureMessage}" th:text="${failureMessage}" style="color: red;"></p>
+
+    <h2>ユーザーリスト</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ユーザー名</th>
+                <th>ロール</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.getUserId()}"></td>
+                <td th:text="${user.getUserName()}"></td>
+                <td>
+                    <span th:if="${user.getRoleId() == 1}">一般ユーザー</span>
+                    <span th:if="${user.getRoleId() == 2}">管理者ユーザー</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

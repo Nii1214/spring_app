@@ -31,7 +31,7 @@ public class AdminUserController {
         return "pages/admin/adminUserView";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/admin/register")
     public String registerUser(
             RedirectAttributes redirectAttributes,
             @RequestParam("user_name") String userName,

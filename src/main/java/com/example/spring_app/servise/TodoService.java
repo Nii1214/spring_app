@@ -16,6 +16,24 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
+    // 未完了のTodoを取得
+    public List<Todo> getIncompleteTodos() {
+        return todoRepository.findByStatusNot(Todo.Status.完了);
+    }
+
+    // 完了済みのTodoを取得
+    public List<Todo> getCompleteTodos() {
+        return todoRepository.findByStatus(Todo.Status.完了);
+    }
+
+    // Todoのステータスを更新
+    public void updateTodoStatus(Integer id, boolean completed) {
+        Todo todo = todoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Todo not found"));
+        todo.setStatus(completed ? Todo.Status.完了 : Todo.Status.未着手);
+        todoRepository.save(todo);
+    }
+
     //新規タスクの登録メソッド
     public void createTodo(String title, String priority, String status) {
         Todo todo = new Todo();

@@ -18,8 +18,10 @@ public class TodoController {
 
     @GetMapping("/todo")
     public String todo(Model model) {
-        List<Todo> todos = todoService.getAllTodos();
-        model.addAttribute("todos", todos);
-        return "pages/todo/todoView";
+        List<Todo> incompleteTodos = todoService.getIncompleteTodos();
+        List<Todo> completeTodos = todoService.getCompleteTodos();
+        model.addAttribute("incompleteTodos", incompleteTodos);
+        model.addAttribute("completeTodos", completeTodos);
+        return "pages/user/todoView";
     }
 }

@@ -3,12 +3,10 @@ package com.example.spring_app.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-// http://localhost:8080/
-
 @Controller
-public class firstController {
+public class IndexController {
     @GetMapping("/")
-    public String first() {
-        return "pages/user/firstview";
+    public String index() {
+        return "index";
     }
-}
+} 

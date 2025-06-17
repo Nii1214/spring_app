@@ -7,6 +7,7 @@ import com.example.spring_app.entity.Todo;
 import com.example.spring_app.servise.TodoService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -30,6 +31,16 @@ public class TodoApiController {
     @GetMapping("/complete")
     public ResponseEntity<List<Todo>> getCompleteTodos() {
         return ResponseEntity.ok(todoService.getCompleteTodos());
+    }
+
+    @PostMapping
+    public ResponseEntity<Todo> createTodo(@RequestBody Map<String, String> todoData) {
+        String title = todoData.get("title");
+        String priority = todoData.get("priority");
+        String status = todoData.get("status");
+        
+        todoService.createTodo(title, priority, status);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/status")

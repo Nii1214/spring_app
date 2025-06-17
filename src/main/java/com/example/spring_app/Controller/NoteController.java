@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class NoteController {
     @GetMapping("/notes")
     public String notes() {
-        return "notes";
+        return "pages/user/notes";
     }
 } 

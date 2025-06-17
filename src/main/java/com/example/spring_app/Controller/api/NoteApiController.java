@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,8 @@ public class NoteApiController {
                 .map(existingNote -> {
                     note.setId(id);
                     note.setUserId(userId);
+                    note.setCreatedAt(existingNote.getCreatedAt());
+                    note.setUpdatedAt(LocalDateTime.now());
                     return ResponseEntity.ok(noteService.save(note));
                 })
                 .orElse(ResponseEntity.notFound().build());

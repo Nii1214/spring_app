@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ノート</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+        .note-list {
+            list-style: none;
+            padding: 0;
+        }
+        .note-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .note-item:hover {
+            background-color: #e9ecef;
+        }
+        .note-item.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .editor-container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+        .editor, .preview {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .preview {
+            border-left: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- サイドバー -->
+            <div class="col-md-3 sidebar">
+                <h3>ノート一覧</h3>
+                <button class="btn btn-primary mb-3" onclick="createNewNote()">新規作成</button>
+                <ul class="note-list" id="noteList">
+                </ul>
+            </div>
+            
+            <!-- メインコンテンツ -->
+            <div class="col-md-9">
+                <div class="editor-container">
+                    <div class="editor">
+                        <textarea id="editor"></textarea>
+                    </div>
+                    <div class="preview" id="preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script th:inline="javascript">
+        // ユーザーIDをサーバーサイドから取得
+        const userId = /*[[${#authentication.principal.id}]]*/ 1;
+        
+        let currentNoteId = null;
+        const easyMDE = new EasyMDE({
+            element: document.getElementById('editor'),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                delay: 1000,
+                uniqueId: 'note-editor'
+            }
+        });
+
+        easyMDE.codemirror.on('change', function() {
+            updatePreview();
+        });
+
+        function updatePreview() {
+            const content = easyMDE.value();
+            document.getElementById('preview').innerHTML = marked.parse(content);
+        }
+
+        function loadNotes() {
+            fetch(`/api/notes?userId=${userId}`)
+                .then(response => response.json())
+                .then(notes => {
+                    const noteList = document.getElementById('noteList');
+                    noteList.innerHTML = '';
+                    notes.forEach(note => {
+                        const li = document.createElement('li');
+                        li.className = 'note-item';
+                        li.textContent = note.title;
+                        li.onclick = () => loadNote(note.id);
+                        noteList.appendChild(li);
+                    });
+                });
+        }
+
+        function loadNote(id) {
+            fetch(`/api/notes/${id}?userId=${userId}`)
+                .then(response => response.json())
+                .then(note => {
+                    currentNoteId = note.id;
+                    easyMDE.value(note.content);
+                    updatePreview();
+                    document.querySelectorAll('.note-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    event.target.classList.add('active');
+                });
+        }
+
+        function createNewNote() {
+            const note = {
+                title: '新規ノート',
+                content: '',
+                userId: userId
+            };
+            fetch('/api/notes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(note)
+            })
+            .then(response => response.json())
+            .then(() => {
+                loadNotes();
+            });
+        }
+
+        // 自動保存
+        setInterval(() => {
+            if (currentNoteId) {
+                const note = {
+                    id: currentNoteId,
+                    title: document.querySelector('.note-item.active')?.textContent || '新規ノート',
+                    content: easyMDE.value(),
+                    userId: userId
+                };
+                fetch(`/api/notes/${currentNoteId}?userId=${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(note)
+                });
+            }
+        }, 5000);
+
+        // 初期ロード
+        loadNotes();
+    </script>
+</body>
+</html> 

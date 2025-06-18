@@ -9,23 +9,30 @@
     <div class="container mx-auto p-4">
         <div class="flex">
             <!-- サイドバー -->
-            <div class="w-1/4 bg-white rounded-lg shadow-md p-6 mr-4">
+            <div class="w-64 bg-white rounded-lg shadow-md p-4 mr-4 flex flex-col h-[calc(100vh-8rem)]">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-gray-700">ノート一覧</h2>
-                    <button onclick="createNewNote()" class="group relative inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5">
+                    <h2 class="text-lg font-medium text-gray-700">ノート一覧</h2>
+                    <button onclick="createNewNote()" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                         </svg>
-                        <span class="ml-2">新規作成</span>
                     </button>
                 </div>
-                <ul id="noteList" class="space-y-2">
-                    <!-- ノート一覧がここに動的に追加されます -->
-                </ul>
+                <div class="relative">
+                    <input type="text" 
+                           placeholder="ノートを検索..." 
+                           class="w-full px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           onkeyup="filterNotes(this.value)">
+                </div>
+                <div class="mt-4 flex-1 overflow-y-auto">
+                    <ul id="noteList" class="space-y-1">
+                        <!-- ノート一覧がここに動的に追加されます -->
+                    </ul>
+                </div>
             </div>
             
             <!-- メインコンテンツ -->
-            <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
+            <div class="flex-1 bg-white rounded-lg shadow-md p-6 h-[calc(100vh-8rem)] overflow-y-auto">
                 <div id="preview" class="prose max-w-none">
                     <!-- ノートの内容がここに表示されます -->
                 </div>
@@ -41,6 +48,7 @@
         // ユーザーIDをサーバーサイドから取得
         const userId = /*[[${#authentication.principal.id}]]*/ 1;
         let currentNoteId = null;
+        let allNotes = []; // 全ノートを保持する配列
 
         // Toast UI Editor のインスタンスを作成
         const editor = new toastui.Editor.factory({
@@ -58,16 +66,36 @@
             fetch(`/api/notes?userId=${userId}`)
                 .then(response => response.json())
                 .then(notes => {
-                    const noteList = document.getElementById('noteList');
-                    noteList.innerHTML = '';
-                    notes.forEach(note => {
-                        const li = document.createElement('li');
-                        li.className = 'p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200';
-                        li.textContent = note.title;
-                        li.onclick = () => loadNote(note.id);
-                        noteList.appendChild(li);
-                    });
+                    allNotes = notes; // 全ノートを保存
+                    renderNotes(notes);
                 });
+        }
+
+        function renderNotes(notes) {
+            const noteList = document.getElementById('noteList');
+            noteList.innerHTML = '';
+            notes.forEach(note => {
+                const li = document.createElement('li');
+                li.className = 'group';
+                li.innerHTML = `
+                    <div class="flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors duration-200 ${currentNoteId === note.id ? 'bg-gray-100' : ''}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="text-sm text-gray-700 truncate">${note.title}</span>
+                    </div>
+                `;
+                li.onclick = () => loadNote(note.id);
+                noteList.appendChild(li);
+            });
+        }
+
+        function filterNotes(query) {
+            const filteredNotes = allNotes.filter(note => 
+                note.title.toLowerCase().includes(query.toLowerCase())
+            );
+            renderNotes(filteredNotes);
         }
 
         function loadNote(id) {
@@ -90,9 +118,9 @@
 
                     // アクティブなノートをハイライト
                     document.querySelectorAll('#noteList li').forEach(item => {
-                        item.classList.remove('bg-blue-50', 'text-blue-700');
+                        item.querySelector('div').classList.remove('bg-gray-100');
                     });
-                    event.target.classList.add('bg-blue-50', 'text-blue-700');
+                    event.currentTarget.querySelector('div').classList.add('bg-gray-100');
                 });
         }
 

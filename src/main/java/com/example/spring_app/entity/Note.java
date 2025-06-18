@@ -21,6 +21,9 @@ public class Note {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    @Column(name = "parent_id")
+    private Long parentId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -71,6 +74,14 @@ public class Note {
         this.userId = userId;
     }
 
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -85,5 +96,18 @@ public class Note {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", userId=" + userId +
+                ", parentId=" + parentId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 } 

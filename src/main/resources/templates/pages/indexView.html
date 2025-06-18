@@ -1,11 +1,193 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Spring Bootの基礎を学ぼう</title>
+    <head th:replace="~{fragments/head :: common-head}">
+        <style>
+            .gradient-text {
+                background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .hero-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239BA3AF' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .feature-card {
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                transform-style: preserve-3d;
+                perspective: 1000px;
+            }
+            .feature-card:hover {
+                transform: translateY(-10px) rotateX(5deg);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(5deg); }
+                100% { transform: translateY(0px) rotate(0deg); }
+            }
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .gradient-border {
+                position: relative;
+                background: linear-gradient(white, white) padding-box,
+                            linear-gradient(135deg, #3B82F6, #2563EB) border-box;
+                border: 2px solid transparent;
+            }
+            .pulse {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: .5; }
+            }
+            .blob {
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+                animation: blob 7s infinite;
+            }
+            @keyframes blob {
+                0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+                25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+                50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+                75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+                100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            }
+        </style>
     </head>
-    <body>
-        <p>Hello, world!</p>
+    <body class="bg-gray-50">
+        <div th:replace="~{fragments/header :: common-header}"></div>
+
+        <!-- ヒーローセクション -->
+        <div class="relative bg-white overflow-hidden hero-pattern">
+            <div class="max-w-7xl mx-auto">
+                <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+                    <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                        <div class="sm:text-center lg:text-left">
+                            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                                <span class="block">シンプルで使いやすい</span>
+                                <span class="gradient-text">ノートアプリケーション</span>
+                            </h1>
+                            <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                                あなたのアイデアを整理し、効率的に管理。シンプルなインターフェースで、いつでもどこでもアクセス可能。
+                            </p>
+                            <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                                <div class="rounded-md shadow">
+                                    <a href="/register" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 md:py-4 md:text-lg md:px-10 transform hover:scale-105">
+                                        無料で始める
+                                    </a>
+                                </div>
+                                <div class="mt-3 sm:mt-0 sm:ml-3">
+                                    <a href="/login" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all duration-300 md:py-4 md:text-lg md:px-10 transform hover:scale-105">
+                                        ログイン
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+                <div class="h-56 w-full bg-gradient-to-r from-blue-400 to-blue-600 animate-float blob opacity-90"></div>
+            </div>
+        </div>
+
+        <!-- 特徴セクション -->
+        <div class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:text-center">
+                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">特徴</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        より良いノート管理を
+                    </p>
+                </div>
+
+                <div class="mt-10">
+                    <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                        <!-- 特徴1 -->
+                        <div class="relative feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md gradient-border">
+                            <div class="absolute -top-4 -left-4 flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg pulse">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <div class="ml-16">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">シンプルな操作性</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    直感的なインターフェースで、誰でも簡単に使い始められます。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 特徴2 -->
+                        <div class="relative feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md gradient-border">
+                            <div class="absolute -top-4 -left-4 flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg pulse">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                            </div>
+                            <div class="ml-16">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">階層構造</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    ノートを階層的に整理し、関連する情報をグループ化できます。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 特徴3 -->
+                        <div class="relative feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md gradient-border">
+                            <div class="absolute -top-4 -left-4 flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg pulse">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <div class="ml-16">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">検索機能</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    必要な情報を素早く見つけるための強力な検索機能を搭載。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 特徴4 -->
+                        <div class="relative feature-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md gradient-border">
+                            <div class="absolute -top-4 -left-4 flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg pulse">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <div class="ml-16">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">セキュリティ</h3>
+                                <p class="mt-2 text-base text-gray-500">
+                                    あなたのデータは安全に保護され、プライバシーが確保されます。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTAセクション -->
+        <div class="relative bg-gradient-to-r from-blue-600 to-blue-800 overflow-hidden">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 mix-blend-multiply"></div>
+            </div>
+            <div class="relative max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    <span class="block">今すぐ始めましょう</span>
+                    <span class="block">あなたのアイデアを整理する</span>
+                </h2>
+                <p class="mt-4 text-lg leading-6 text-blue-100">
+                    無料でアカウントを作成して、より効率的なノート管理を始めましょう。
+                </p>
+                <a href="/register" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 sm:w-auto glass-effect">
+                    無料で始める
+                </a>
+            </div>
+        </div>
     </body>
 </html>

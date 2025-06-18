@@ -49,6 +49,7 @@
         const userId = /*[[${#authentication.principal.id}]]*/ 1;
         let currentNoteId = null;
         let allNotes = []; // 全ノートを保持する配列
+        let expandedNotes = new Set(); // 展開されているノートのIDを保持
 
         // Toast UI Editor のインスタンスを作成
         const editor = new toastui.Editor.factory({
@@ -67,6 +68,7 @@
                 .then(response => response.json())
                 .then(notes => {
                     allNotes = notes; // 全ノートを保存
+                    expandedNotes.clear(); // 展開状態をリセット
                     renderNotes(notes);
                 });
         }
@@ -74,27 +76,80 @@
         function renderNotes(notes) {
             const noteList = document.getElementById('noteList');
             noteList.innerHTML = '';
-            notes.forEach(note => {
-                const li = document.createElement('li');
-                li.className = 'group';
-                li.innerHTML = `
-                    <div class="flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors duration-200 ${currentNoteId === note.id ? 'bg-gray-100' : ''}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="text-sm text-gray-700 truncate">${note.title}</span>
-                    </div>
-                `;
-                li.onclick = () => loadNote(note.id);
-                noteList.appendChild(li);
+            
+            // 親ノート（parentIdがnullのノート）を取得
+            const parentNotes = notes.filter(note => !note.parentId);
+            
+            // 各親ノートとその子ノートを表示
+            parentNotes.forEach(note => {
+                renderNoteWithChildren(note, notes, 0);
             });
+        }
+
+        function renderNoteWithChildren(note, allNotes, level) {
+            const noteList = document.getElementById('noteList');
+            
+            // ノートの要素を作成
+            const noteLi = document.createElement('li');
+            noteLi.className = 'group';
+            
+            // 子ノートを取得
+            const childNotes = allNotes.filter(n => n.parentId === note.id);
+            const hasChildren = childNotes.length > 0;
+            const isExpanded = expandedNotes.has(note.id);
+            
+            // インデント用のスタイル
+            const indentStyle = `margin-left: ${level * 1.5}rem`;
+            
+            noteLi.innerHTML = `
+                <div class="flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors duration-200 ${currentNoteId === note.id ? 'bg-gray-100' : ''}" style="${indentStyle}" data-note-id="${note.id}">
+                    ${hasChildren ? `
+                        <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200 mr-1" onclick="toggleNote(${note.id}, event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform ${isExpanded ? 'rotate-90' : ''}" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    ` : '<div class="w-6"></div>'}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                        <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-sm text-gray-700 truncate">${note.title}</span>
+                </div>
+            `;
+
+            // ノートのクリックイベント
+            noteLi.querySelector('div').addEventListener('click', (e) => {
+                if (!e.target.closest('button')) {
+                    loadNote(note.id);
+                }
+            });
+
+            noteList.appendChild(noteLi);
+
+            // 子ノートを表示（展開されている場合のみ）
+            if (hasChildren && isExpanded) {
+                childNotes.forEach(childNote => {
+                    renderNoteWithChildren(childNote, allNotes, level + 1);
+                });
+            }
+        }
+
+        function toggleNote(noteId, event) {
+            event.stopPropagation();
+            if (expandedNotes.has(noteId)) {
+                expandedNotes.delete(noteId);
+            } else {
+                expandedNotes.add(noteId);
+            }
+            renderNotes(allNotes);
         }
 
         function filterNotes(query) {
             const filteredNotes = allNotes.filter(note => 
                 note.title.toLowerCase().includes(query.toLowerCase())
             );
+            expandedNotes.clear(); // 検索時は展開状態をリセット
             renderNotes(filteredNotes);
         }
 
@@ -117,10 +172,14 @@
                     editor.setMarkdown(content);
 
                     // アクティブなノートをハイライト
-                    document.querySelectorAll('#noteList li').forEach(item => {
-                        item.querySelector('div').classList.remove('bg-gray-100');
+                    document.querySelectorAll('#noteList li div').forEach(item => {
+                        item.classList.remove('bg-gray-100');
                     });
-                    event.currentTarget.querySelector('div').classList.add('bg-gray-100');
+                    // クリックされたノートをハイライト
+                    const clickedNote = document.querySelector(`#noteList li div[data-note-id="${id}"]`);
+                    if (clickedNote) {
+                        clickedNote.classList.add('bg-gray-100');
+                    }
                 });
         }
 
@@ -128,7 +187,8 @@
             const note = {
                 title: '新規ノート',
                 content: '',
-                userId: userId
+                userId: userId,
+                parentId: null
             };
             fetch('/api/notes', {
                 method: 'POST',
@@ -139,6 +199,7 @@
             })
             .then(response => response.json())
             .then(() => {
+                expandedNotes.clear(); // 新規作成時は展開状態をリセット
                 loadNotes();
             });
         }

@@ -50,4 +50,19 @@ public class TodoApiController {
         todoService.updateTodoStatus(id, completed);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateTodo(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> todoData) {
+        String title = todoData.get("title");
+        todoService.updateTodoTitle(id, title);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Integer id) {
+        todoService.deleteTodo(id);
+        return ResponseEntity.ok().build();
+    }
 } 

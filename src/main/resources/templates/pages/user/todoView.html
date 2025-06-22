@@ -54,7 +54,11 @@
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">新しいタスクを作成して始めましょう</p>
                 </div>
                 
-                <div th:each="todo : ${incompleteTodos}" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200 animate-fade-in" th:data-todo-id="${todo.id}">
+                <div th:each="todo : ${incompleteTodos}" 
+                     class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200 animate-fade-in" 
+                     th:data-todo-id="${todo.id}" 
+                     th:data-todo-title="${todo.getTitle()}"
+                     th:attr="data-todo-id=${todo.id}, data-todo-title=${todo.getTitle()}">
                     <div class="flex items-center h-5">
                         <input type="checkbox" 
                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 todo-checkbox" 
@@ -65,12 +69,12 @@
                         <h3 class="text-sm font-medium text-gray-900 dark:text-white" th:text="${todo.getTitle()}"></h3>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                        <button class="edit-todo-btn p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
-                        <button class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
+                        <button class="delete-todo-btn p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
@@ -89,7 +93,11 @@
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">タスクを完了させるとここに表示されます</p>
                 </div>
                 
-                <div th:each="todo : ${completeTodos}" class="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 animate-fade-in opacity-75" th:data-todo-id="${todo.id}">
+                <div th:each="todo : ${completeTodos}" 
+                     class="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 animate-fade-in opacity-75" 
+                     th:data-todo-id="${todo.id}" 
+                     th:data-todo-title="${todo.getTitle()}"
+                     th:attr="data-todo-id=${todo.id}, data-todo-title=${todo.getTitle()}">
                     <div class="flex items-center h-5">
                         <input type="checkbox" 
                                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 todo-checkbox" 
@@ -101,12 +109,12 @@
                         <h3 class="text-sm font-medium text-gray-900 dark:text-white line-through" th:text="${todo.getTitle()}"></h3>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                        <button class="edit-todo-btn p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
-                        <button class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
+                        <button class="delete-todo-btn p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
@@ -164,6 +172,56 @@
                 </div>
             </div>
         </div>
+
+        <!-- 編集モーダル -->
+        <div id="editTodoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-xl animate-scale-in">
+                    <!-- モーダルヘッダー -->
+                    <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">タスクを編集</h3>
+                        <button id="editCancelBtn" class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- モーダルボディ -->
+                    <div class="p-6">
+                        <form id="editTodoForm" class="space-y-6">
+                            <input type="hidden" id="editTodoId" name="todoId">
+                            <div>
+                                <label for="editTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    タスクタイトル
+                                </label>
+                                <input type="text" 
+                                       id="editTitle" 
+                                       name="title" 
+                                       required
+                                       placeholder="タスクのタイトルを入力してください"
+                                       class="input focus-ring">
+                            </div>
+                            
+                            <div class="flex justify-end space-x-3 pt-4">
+                                <button type="button" 
+                                        id="editCancelBtn2"
+                                        class="btn btn-secondary">
+                                    キャンセル
+                                </button>
+                                <button type="submit" 
+                                        class="btn btn-primary">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    更新
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- フッター -->
@@ -195,43 +253,47 @@
                 $('#incomplete-todos').addClass('hidden');
             });
 
-            // タブの内容が空かどうかをチェックする関数
+            // タブの内容をチェックする関数
             function checkEmptyTabs() {
-                const incompleteCount = $('#incomplete-todos .flex').length;
-                const completeCount = $('#complete-todos .flex').length;
+                const incompleteCount = $('#incomplete-todos').children().length;
+                const completeCount = $('#complete-todos').children().length;
                 
-                // 未完了タスクが空の場合
                 if (incompleteCount === 0) {
-                    $('#incomplete-todos .text-center').removeClass('hidden');
-                } else {
-                    $('#incomplete-todos .text-center').addClass('hidden');
+                    $('#incomplete-todos').html('<div class="text-center py-8 text-gray-500 dark:text-gray-400">未完了のタスクはありません</div>');
                 }
                 
-                // 完了タスクが空の場合
                 if (completeCount === 0) {
-                    $('#complete-todos .text-center').removeClass('hidden');
-                } else {
-                    $('#complete-todos .text-center').addClass('hidden');
+                    $('#complete-todos').html('<div class="text-center py-8 text-gray-500 dark:text-gray-400">完了済みのタスクはありません</div>');
                 }
             }
 
             // 元の位置に戻す関数
             function restoreOriginalPosition($todoItem, todoId) {
-                const originalIndex = originalOrder[todoId];
-                if (originalIndex !== undefined) {
-                    const $incompleteTodos = $('#incomplete-todos');
-                    const $existingItems = $incompleteTodos.find('.flex');
-                    
-                    if (originalIndex >= $existingItems.length) {
-                        // 元の位置が現在のリストの長さを超える場合は最後に追加
-                        $todoItem.appendTo($incompleteTodos);
-                    } else {
-                        // 元の位置に挿入
-                        $existingItems.eq(originalIndex).before($todoItem);
+                const $incompleteTodos = $('#incomplete-todos');
+                const $existingTodos = $incompleteTodos.children();
+                
+                if ($existingTodos.length === 0) {
+                    $incompleteTodos.append($todoItem);
+                    return;
+                }
+                
+                // 既存のタスクのIDを取得して位置を決定
+                let inserted = false;
+                $existingTodos.each(function(index) {
+                    const existingId = $(this).data('todo-id');
+                    if (todoId < existingId) {
+                        if (index === 0) {
+                            $incompleteTodos.prepend($todoItem);
+                        } else {
+                            $(this).before($todoItem);
+                        }
+                        inserted = true;
+                        return false; // break
                     }
-                } else {
-                    // 元の位置が不明な場合は最後に追加
-                    $todoItem.appendTo($incompleteTodos);
+                });
+                
+                if (!inserted) {
+                    $incompleteTodos.append($todoItem);
                 }
             }
 
@@ -241,20 +303,11 @@
                 const todoId = $checkbox.data('todo-id');
                 const isCompleted = $checkbox.prop('checked');
                 
-                // データ属性を使用して特定のタスクのカードを取得
-                const $todoItem = $(`div[data-todo-id="${todoId}"]`);
-
-                console.log('チェックボックス変更:', {
-                    todoId: todoId,
-                    isCompleted: isCompleted,
-                    todoItem: $todoItem.length > 0 ? 'カード要素を取得しました' : 'カード要素が見つかりません',
-                    todoItemClasses: $todoItem.attr('class'),
-                    todoItemCount: $todoItem.length
-                });
+                // より具体的なセレクターでカード全体を取得
+                const $todoItem = $checkbox.closest('div[data-todo-id]');
 
                 // カード要素が見つからない場合は処理を中止
                 if ($todoItem.length === 0) {
-                    console.error('カード要素が見つかりません');
                     $checkbox.prop('checked', !isCompleted);
                     return;
                 }
@@ -265,11 +318,8 @@
                     contentType: 'application/json',
                     data: JSON.stringify(isCompleted),
                     success: function() {
-                        console.log('API呼び出し成功');
-                        
                         // 成功時の処理
                         if (isCompleted) {
-                            console.log('タスクを完了タブに移動中...');
                             // 完了タブに移動（一番上に追加）
                             $todoItem.fadeOut(300, function() {
                                 $(this).detach().prependTo('#complete-todos');
@@ -278,13 +328,7 @@
                                 $(this).find('input').removeClass('text-blue-600 focus:ring-blue-500').addClass('text-green-600 focus:ring-green-500');
                                 $(this).fadeIn(300);
                             });
-                            
-                            // 完了タブが非表示の場合は未完了タブに移動したことを視覚的に示す
-                            if ($('#complete-todos').hasClass('hidden')) {
-                                console.log('完了タブが非表示のため、タスクが完了タブに移動しました');
-                            }
                         } else {
-                            console.log('タスクを未完了タブに移動中...');
                             // 未完了タブに移動（元の位置に戻す）
                             $todoItem.fadeOut(300, function() {
                                 $(this).detach();
@@ -298,20 +342,13 @@
                                 
                                 $(this).fadeIn(300);
                             });
-                            
-                            // 未完了タブが非表示の場合は完了タブに移動したことを視覚的に示す
-                            if ($('#incomplete-todos').hasClass('hidden')) {
-                                console.log('未完了タブが非表示のため、タスクが未完了タブに移動しました');
-                            }
                         }
                         
                         // タブの内容をチェック
                         checkEmptyTabs();
-                        console.log('タブ移動完了');
                     },
                     error: function() {
                         // エラー時の処理
-                        console.error('API呼び出し失敗');
                         alert('更新に失敗しました');
                         $checkbox.prop('checked', !isCompleted);
                     }
@@ -324,11 +361,72 @@
             const $cancelBtn = $('#cancelBtn, #cancelBtn2');
             const $form = $('#newTodoForm');
 
+            // 編集モーダル関連の処理
+            const $editModal = $('#editTodoModal');
+            const $editCancelBtn = $('#editCancelBtn, #editCancelBtn2');
+            const $editForm = $('#editTodoForm');
+
             // モーダルを開く
             $newTodoBtn.on('click', function(e) {
                 e.stopPropagation();
                 $modal.removeClass('hidden');
                 $('#title').focus();
+            });
+
+            // 編集ボタンのイベントハンドラ
+            $(document).on('click', '.edit-todo-btn', function(e) {
+                e.stopPropagation();
+                const $btn = $(this);
+                // より具体的なセレクターでカード全体を取得
+                const $todoItem = $btn.closest('div[data-todo-id]');
+                
+                const todoId = $todoItem.data('todo-id') || $todoItem.attr('data-todo-id');
+                const todoTitle = $todoItem.data('todo-title') || $todoItem.attr('data-todo-title') || $todoItem.find('h3').text().trim();
+
+                // タイトルが空の場合はデフォルト値を設定
+                if (!todoTitle) {
+                    $('#editTitle').val('無題のタスク');
+                } else {
+                    $('#editTitle').val(todoTitle);
+                }
+
+                // 編集モーダルにデータを設定
+                $('#editTodoId').val(todoId);
+
+                // 編集モーダルを開く
+                $editModal.removeClass('hidden');
+                $('#editTitle').focus();
+            });
+
+            // 削除ボタンのイベントハンドラ
+            $(document).on('click', '.delete-todo-btn', function(e) {
+                e.stopPropagation();
+                const $btn = $(this);
+                // より具体的なセレクターでカード全体を取得
+                const $todoItem = $btn.closest('div[data-todo-id]');
+                
+                const todoId = $todoItem.data('todo-id') || $todoItem.attr('data-todo-id');
+                const todoTitle = $todoItem.data('todo-title') || $todoItem.attr('data-todo-title') || $todoItem.find('h3').text().trim();
+
+                // タイトルが空の場合はデフォルト値を設定
+                const displayTitle = todoTitle || '無題のタスク';
+
+                // 削除確認ダイアログ
+                if (confirm(`「${displayTitle}」を削除しますか？\nこの操作は取り消せません。`)) {
+                    $.ajax({
+                        url: `/api/todos/${todoId}`,
+                        type: 'DELETE',
+                        success: function() {
+                            $todoItem.fadeOut(300, function() {
+                                $(this).remove();
+                                checkEmptyTabs();
+                            });
+                        },
+                        error: function() {
+                            alert('削除に失敗しました');
+                        }
+                    });
+                }
             });
 
             // モーダルを閉じる関数
@@ -337,10 +435,22 @@
                 $form[0].reset();
             }
 
+            // 編集モーダルを閉じる関数
+            function closeEditModal() {
+                $editModal.addClass('hidden');
+                $editForm[0].reset();
+            }
+
             // キャンセルボタンで閉じる
             $cancelBtn.on('click', function(e) {
                 e.stopPropagation();
                 closeModal();
+            });
+
+            // 編集モーダルのキャンセルボタンで閉じる
+            $editCancelBtn.on('click', function(e) {
+                e.stopPropagation();
+                closeEditModal();
             });
 
             // モーダルの背景（オーバーレイ）をクリックした時に閉じる
@@ -350,36 +460,109 @@
                 }
             });
 
+            // 編集モーダルの背景（オーバーレイ）をクリックした時に閉じる
+            $editModal.on('click', function(e) {
+                if (e.target === this) {
+                    closeEditModal();
+                }
+            });
+
             // ESCキーでモーダルを閉じる
             $(document).on('keydown', function(e) {
-                if (e.key === 'Escape' && !$modal.hasClass('hidden')) {
-                    closeModal();
+                if (e.key === 'Escape') {
+                    if (!$modal.hasClass('hidden')) {
+                        closeModal();
+                    }
+                    if (!$editModal.hasClass('hidden')) {
+                        closeEditModal();
+                    }
                 }
             });
 
             // フォーム送信
             $form.on('submit', function(e) {
                 e.preventDefault();
-                const formData = {
-                    title: $('#title').val(),
-                    priority: '中', // デフォルト値
-                    status: '未着手'
-                };
+                const title = $('#title').val().trim();
+                
+                if (!title) {
+                    alert('タイトルを入力してください');
+                    return;
+                }
 
                 $.ajax({
                     url: '/api/todos',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify(formData),
+                    data: JSON.stringify({ title: title }),
                     success: function(response) {
+                        // フォームをリセット
+                        $('#title').val('');
                         closeModal();
-                        location.reload();
+                        
+                        // 新しいタスクを画面に追加
+                        const newTodoHtml = createTodoHtml(response);
+                        $('#incomplete-todos').prepend(newTodoHtml);
+                        
+                        // 成功メッセージを表示
+                        showSuccessMessage('タスクを追加しました');
                     },
                     error: function() {
-                        alert('登録に失敗しました');
+                        alert('追加に失敗しました');
                     }
                 });
             });
+
+            // 編集フォーム送信
+            $editForm.on('submit', function(e) {
+                e.preventDefault();
+                const todoId = $('#editTodoId').val();
+                const formData = {
+                    title: $('#editTitle').val()
+                };
+
+                $.ajax({
+                    url: `/api/todos/${todoId}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        closeEditModal();
+                        
+                        // 画面上のタイトルを更新
+                        const $todoItem = $(`div[data-todo-id="${todoId}"]`);
+                        $todoItem.find('h3').text(formData.title);
+                        
+                        // 成功メッセージを表示
+                        showSuccessMessage('タスクを更新しました');
+                    },
+                    error: function() {
+                        alert('更新に失敗しました');
+                    }
+                });
+            });
+
+            // 成功メッセージを表示する関数
+            function showSuccessMessage(message) {
+                const $message = $(`
+                    <div class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            ${message}
+                        </div>
+                    </div>
+                `);
+                
+                $('body').append($message);
+                
+                // 3秒後に自動で消す
+                setTimeout(function() {
+                    $message.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
         });
     </script>
 </body>

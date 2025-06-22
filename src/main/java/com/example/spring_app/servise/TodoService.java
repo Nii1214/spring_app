@@ -47,4 +47,19 @@ public class TodoService {
     public List<Todo> getAllTodos() {
         return todoRepository.findAll();
     }
+
+    // タスクの削除メソッド
+    public void deleteTodo(Integer id) {
+        Todo todo = todoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Todo not found"));
+        todoRepository.delete(todo);
+    }
+
+    // タスクのタイトル更新メソッド
+    public void updateTodoTitle(Integer id, String title) {
+        Todo todo = todoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Todo not found"));
+        todo.setTitle(title);
+        todoRepository.save(todo);
+    }
 }

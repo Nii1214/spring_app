@@ -1,283 +1,485 @@
-/* Toast UI Editor カスタムスタイル */
+/* Toast UI Editor カスタムスタイル - Apple Design Rules */
+
+/* プレビューエリア全体 */
 .toastui-editor-contents {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    color: #1d1d1f !important;
-    background: transparent !important;
-    line-height: 1.5 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1d1d1f;
+    background-color: transparent;
+    padding: 24px 32px;
+    border-radius: 12px;
+    margin: 0;
 }
 
-/* ダークモード対応 */
+/* ダークモード（手動切り替え） */
+.dark-mode .toastui-editor-contents {
+    color: #f5f5f7;
+    background-color: transparent;
+}
+
+/* システムダークモード対応 */
 @media (prefers-color-scheme: dark) {
     .toastui-editor-contents {
-        color: #ffffff !important;
+        color: #f5f5f7;
+        background-color: transparent;
     }
 }
 
-/* ヘッダー - より読みやすさを重視したフォントサイズ */
-.toastui-editor-contents h1 {
-    font-size: 1.25rem !important; /* text-xl (18px) - さらに小さく */
-    font-weight: 700 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.75rem !important; /* space-3 (12px) */
-    margin-top: 1.25rem !important; /* space-5 (20px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    line-height: 1.3 !important;
-    border-bottom: 1px solid #c7c7cc !important; /* 一本線のみ */
-    padding-bottom: 0.5rem !important; /* space-2 (8px) */
+/* Toast UI Editor のプレビューコンテナ */
+.toastui-editor-viewer {
+    background-color: transparent;
+    color: #1d1d1f;
 }
 
-.toastui-editor-contents h2 {
-    font-size: 1.125rem !important; /* text-lg (18px) - さらに小さく */
-    font-weight: 600 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.5rem !important; /* space-2 (8px) */
-    margin-top: 1rem !important; /* space-4 (16px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    line-height: 1.4 !important;
-    border-bottom: 1px solid #c7c7cc !important; /* 一本線のみ */
-    padding-bottom: 0.375rem !important; /* space-1.5 (6px) */
+.dark-mode .toastui-editor-viewer {
+    background-color: transparent;
+    color: #f5f5f7;
 }
 
-.toastui-editor-contents h3 {
-    font-size: 1rem !important; /* text-base (16px) - さらに小さく */
-    font-weight: 600 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.375rem !important; /* space-1.5 (6px) */
-    margin-top: 0.75rem !important; /* space-3 (12px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    line-height: 1.4 !important;
-    border-bottom: 1px solid #c7c7cc !important; /* 一本線のみ */
-    padding-bottom: 0.25rem !important; /* space-1 (4px) */
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-viewer {
+        background-color: transparent;
+        color: #f5f5f7;
+    }
 }
 
-.toastui-editor-contents h4 {
-    font-size: 0.875rem !important; /* text-sm (14px) - さらに小さく */
-    font-weight: 500 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.375rem !important; /* space-1.5 (6px) */
-    margin-top: 0.5rem !important; /* space-2 (8px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    line-height: 1.4 !important;
-    border-bottom: 1px solid #c7c7cc !important; /* 一本線のみ */
-    padding-bottom: 0.25rem !important; /* space-1 (4px) */
+/* Toast UI Editor のプレビューエリア */
+.toastui-editor-viewer .toastui-editor-contents {
+    background-color: transparent;
+    color: inherit;
 }
 
-/* 段落 - より読みやすさを重視したサイズ */
-.toastui-editor-contents p {
-    font-size: 0.75rem !important; /* text-xs (12px) - さらに小さく */
-    line-height: 1.6 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.75rem !important; /* space-3 (12px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
+/* 見出し */
+.toastui-editor-contents h1,
+.toastui-editor-contents h2,
+.toastui-editor-contents h3,
+.toastui-editor-contents h4,
+.toastui-editor-contents h5,
+.toastui-editor-contents h6 {
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 32px 0 16px 0;
+    line-height: 1.3;
 }
 
-/* リスト - より読みやすさを重視したスタイル */
-.toastui-editor-contents ul,
-.toastui-editor-contents ol {
-    margin-bottom: 0.75rem !important; /* space-3 (12px) */
-    padding-left: 1.25rem !important; /* space-5 (20px) */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
+.dark-mode .toastui-editor-contents h1,
+.dark-mode .toastui-editor-contents h2,
+.dark-mode .toastui-editor-contents h3,
+.dark-mode .toastui-editor-contents h4,
+.dark-mode .toastui-editor-contents h5,
+.dark-mode .toastui-editor-contents h6 {
+    color: #f5f5f7;
 }
 
-.toastui-editor-contents li {
-    font-size: 0.75rem !important; /* text-xs (12px) - さらに小さく */
-    line-height: 1.6 !important;
-    color: #1d1d1f !important;
-    margin-bottom: 0.125rem !important; /* space-0.5 (2px) */
-}
-
-/* リンク - Appleデザインに合わせたスタイル */
-.toastui-editor-contents a {
-    color: #007AFF !important; /* Apple Blue */
-    text-decoration: none !important;
-    border-bottom: 1px solid transparent !important;
-    transition: all 0.2s ease-in-out !important;
-    font-weight: 500 !important;
-}
-
-.toastui-editor-contents a:hover {
-    border-bottom-color: #007AFF !important;
-    color: #0056CC !important;
-}
-
-/* コード - より読みやすさを重視したスタイル */
-.toastui-editor-contents code {
-    background-color: #f2f2f7 !important; /* System Gray 6 */
-    color: #1d1d1f !important;
-    padding: 0.125rem 0.25rem !important; /* 2px 4px - より小さく */
-    border-radius: 0.25rem !important; /* rounded */
-    font-size: 0.625rem !important; /* text-xsより小さく (10px) */
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
-    font-weight: 500 !important;
-}
-
-.toastui-editor-contents pre {
-    background-color: #f2f2f7 !important; /* System Gray 6 */
-    border: 1px solid #c7c7cc !important; /* System Gray 4 */
-    border-radius: 0.5rem !important; /* rounded-lg */
-    padding: 1rem !important; /* space-4 (16px) - より小さく */
-    margin-bottom: 1rem !important; /* space-4 (16px) - より小さく */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    overflow-x: auto !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; /* shadow-sm */
-}
-
-.toastui-editor-contents pre code {
-    background: none !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    color: #1d1d1f !important;
-    font-size: 0.625rem !important; /* text-xsより小さく (10px) */
-}
-
-/* 引用 - より読みやすさを重視したスタイル */
-.toastui-editor-contents blockquote {
-    border-left: 4px solid #007AFF !important; /* Apple Blue */
-    background-color: #f2f2f7 !important; /* System Gray 6 */
-    padding: 1rem !important; /* space-4 (16px) - より小さく */
-    margin: 1rem 0 !important; /* space-4 (16px) - より小さく */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    border-radius: 0 0.5rem 0.5rem 0 !important; /* rounded-r-lg */
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; /* shadow-sm */
-}
-
-.toastui-editor-contents blockquote p {
-    margin: 0 !important;
-    color: #86868b !important; /* Secondary Text */
-    font-style: italic !important;
-    font-size: 0.75rem !important; /* text-xs (12px) - より小さく */
-    line-height: 1.6 !important;
-}
-
-/* テーブル - より読みやすさを重視したスタイル */
-.toastui-editor-contents table {
-    border-collapse: collapse !important;
-    width: 100% !important;
-    margin-bottom: 1rem !important; /* space-4 (16px) - より小さく */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    border-radius: 0.5rem !important; /* rounded-lg */
-    overflow: hidden !important;
-    border: 1px solid #c7c7cc !important; /* System Gray 4 */
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; /* shadow-sm */
-}
-
-.toastui-editor-contents th {
-    background-color: #f2f2f7 !important; /* System Gray 6 */
-    color: #1d1d1f !important;
-    font-weight: 600 !important;
-    padding: 0.5rem !important; /* space-2 (8px) - より小さく */
-    text-align: left !important;
-    border-bottom: 1px solid #c7c7cc !important; /* System Gray 4 */
-    font-size: 0.625rem !important; /* text-xsより小さく (10px) */
-}
-
-.toastui-editor-contents td {
-    padding: 0.5rem !important; /* space-2 (8px) - より小さく */
-    border-bottom: 1px solid #c7c7cc !important; /* System Gray 4 */
-    color: #1d1d1f !important;
-    font-size: 0.625rem !important; /* text-xsより小さく (10px) */
-}
-
-.toastui-editor-contents tr:last-child td {
-    border-bottom: none !important;
-}
-
-.toastui-editor-contents tr:hover {
-    background-color: #f9f9f9 !important; /* 軽いホバー効果 */
-}
-
-/* 水平線 - より読みやすさを重視したスタイル */
-.toastui-editor-contents hr {
-    border: none !important;
-    height: 1px !important;
-    background-color: #c7c7cc !important; /* System Gray 4 */
-    margin: 1.5rem 0 !important; /* space-6 (24px) - より小さく */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    border-radius: 0.5px !important;
-}
-
-/* 強調 - より読みやすさを重視したスタイル */
-.toastui-editor-contents strong {
-    font-weight: 600 !important;
-    color: #1d1d1f !important;
-}
-
-.toastui-editor-contents em {
-    font-style: italic !important;
-    color: #1d1d1f !important;
-}
-
-/* チェックボックスリスト */
-.toastui-editor-contents input[type="checkbox"] {
-    margin-right: 0.375rem !important; /* space-1.5 (6px) - より小さく */
-    transform: scale(0.9) !important; /* より小さく */
-}
-
-/* ダークモード対応 - デザインルールに合わせたカラー */
 @media (prefers-color-scheme: dark) {
     .toastui-editor-contents h1,
     .toastui-editor-contents h2,
     .toastui-editor-contents h3,
     .toastui-editor-contents h4,
-    .toastui-editor-contents p,
-    .toastui-editor-contents li,
-    .toastui-editor-contents strong,
-    .toastui-editor-contents em,
-    .toastui-editor-contents th,
-    .toastui-editor-contents td {
-        color: #ffffff !important;
+    .toastui-editor-contents h5,
+    .toastui-editor-contents h6 {
+        color: #f5f5f7;
     }
+}
 
-    .toastui-editor-contents code {
-        background-color: #2c2c2e !important; /* Dark System Gray 6 */
-        color: #ffffff !important;
+.toastui-editor-contents h1 {
+    font-size: 28px;
+    margin-top: 0;
+}
+
+.toastui-editor-contents h2 {
+    font-size: 24px;
+}
+
+.toastui-editor-contents h3 {
+    font-size: 20px;
+}
+
+.toastui-editor-contents h4 {
+    font-size: 18px;
+}
+
+.toastui-editor-contents h5 {
+    font-size: 16px;
+}
+
+.toastui-editor-contents h6 {
+    font-size: 14px;
+}
+
+/* 段落 */
+.toastui-editor-contents p {
+    margin: 0 0 16px 0;
+    line-height: 1.6;
+    color: #1d1d1f;
+}
+
+.dark-mode .toastui-editor-contents p {
+    color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-contents p {
+        color: #f5f5f7;
     }
+}
 
+/* リスト */
+.toastui-editor-contents ul,
+.toastui-editor-contents ol {
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+.toastui-editor-contents li {
+    margin: 8px 0;
+    line-height: 1.6;
+    color: #1d1d1f;
+}
+
+.dark-mode .toastui-editor-contents li {
+    color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-contents li {
+        color: #f5f5f7;
+    }
+}
+
+/* リンク */
+.toastui-editor-contents a {
+    color: #007aff;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color 0.2s ease;
+}
+
+.toastui-editor-contents a:hover {
+    border-bottom-color: #007aff;
+}
+
+.dark-mode .toastui-editor-contents a {
+    color: #0a84ff;
+}
+
+.dark-mode .toastui-editor-contents a:hover {
+    border-bottom-color: #0a84ff;
+}
+
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-contents a {
+        color: #0a84ff;
+    }
+    
+    .toastui-editor-contents a:hover {
+        border-bottom-color: #0a84ff;
+    }
+}
+
+/* コードブロック */
+.toastui-editor-contents pre {
+    background-color: #f5f5f7;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    border: 1px solid #e5e5e7;
+}
+
+.dark-mode .toastui-editor-contents pre {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+}
+
+@media (prefers-color-scheme: dark) {
     .toastui-editor-contents pre {
-        background-color: #2c2c2e !important; /* Dark System Gray 6 */
-        border-color: #3a3a3c !important; /* Dark System Gray 4 */
+        background-color: #2c2c2e;
+        border-color: #3a3a3c;
     }
+}
 
+.toastui-editor-contents pre code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1d1d1f;
+    background: none;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+}
+
+.dark-mode .toastui-editor-contents pre code {
+    color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
     .toastui-editor-contents pre code {
-        color: #ffffff !important;
+        color: #f5f5f7;
     }
+}
 
+/* インラインコード */
+.toastui-editor-contents code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    background-color: #f5f5f7;
+    color: #d73a49;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e5e5e7;
+}
+
+.dark-mode .toastui-editor-contents code {
+    background-color: #2c2c2e;
+    color: #ff7b72;
+    border-color: #3a3a3c;
+}
+
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-contents code {
+        background-color: #2c2c2e;
+        color: #ff7b72;
+        border-color: #3a3a3c;
+    }
+}
+
+/* 引用 */
+.toastui-editor-contents blockquote {
+    border-left: 4px solid #007aff;
+    margin: 16px 0;
+    padding: 0 16px;
+    color: #6e6e73;
+    font-style: italic;
+}
+
+.dark-mode .toastui-editor-contents blockquote {
+    border-left-color: #0a84ff;
+    color: #98989d;
+}
+
+@media (prefers-color-scheme: dark) {
     .toastui-editor-contents blockquote {
-        background-color: #2c2c2e !important; /* Dark System Gray 6 */
-        border-left-color: #007AFF !important; /* Apple Blue */
+        border-left-color: #0a84ff;
+        color: #98989d;
     }
+}
 
-    .toastui-editor-contents blockquote p {
-        color: #8e8e93 !important; /* Dark Secondary Text */
-    }
+/* テーブル */
+.toastui-editor-contents table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
+.toastui-editor-contents th,
+.toastui-editor-contents td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e7;
+}
+
+.toastui-editor-contents th {
+    background-color: #f5f5f7;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.dark-mode .toastui-editor-contents th {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border-bottom-color: #3a3a3c;
+}
+
+.dark-mode .toastui-editor-contents td {
+    border-bottom-color: #3a3a3c;
+    color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
     .toastui-editor-contents th {
-        background-color: #2c2c2e !important; /* Dark System Gray 6 */
-        color: #ffffff !important;
-        border-bottom-color: #3a3a3c !important; /* Dark System Gray 4 */
+        background-color: #2c2c2e;
+        color: #f5f5f7;
+        border-bottom-color: #3a3a3c;
     }
-
+    
     .toastui-editor-contents td {
-        border-bottom-color: #3a3a3c !important; /* Dark System Gray 4 */
-        color: #ffffff !important;
+        border-bottom-color: #3a3a3c;
+        color: #f5f5f7;
     }
+}
 
-    .toastui-editor-contents tr:hover {
-        background-color: #3a3a3c !important; /* Dark System Gray 4 */
-    }
+/* 水平線 */
+.toastui-editor-contents hr {
+    border: none;
+    height: 1px;
+    background-color: #e5e5e7;
+    margin: 32px 0;
+}
 
+.dark-mode .toastui-editor-contents hr {
+    background-color: #3a3a3c;
+}
+
+@media (prefers-color-scheme: dark) {
     .toastui-editor-contents hr {
-        background-color: #3a3a3c !important; /* Dark System Gray 4 */
+        background-color: #3a3a3c;
+    }
+}
+
+/* 強調 */
+.toastui-editor-contents strong {
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.dark-mode .toastui-editor-contents strong {
+    color: #f5f5f7;
+}
+
+.toastui-editor-contents em {
+    font-style: italic;
+    color: #1d1d1f;
+}
+
+.dark-mode .toastui-editor-contents em {
+    color: #f5f5f7;
+}
+
+@media (prefers-color-scheme: dark) {
+    .toastui-editor-contents strong {
+        color: #f5f5f7;
+    }
+    
+    .toastui-editor-contents em {
+        color: #f5f5f7;
+    }
+}
+
+/* highlight.js カスタムスタイル */
+.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ライトモードのシンタックスハイライト色 */
+.hljs-keyword {
+    color: #d73a49 !important;
+}
+
+.hljs-string {
+    color: #032f62 !important;
+}
+
+.hljs-comment {
+    color: #6a737d !important;
+    font-style: italic;
+}
+
+.hljs-number {
+    color: #005cc5 !important;
+}
+
+.hljs-function {
+    color: #6f42c1 !important;
+}
+
+.hljs-class {
+    color: #6f42c1 !important;
+}
+
+.hljs-variable {
+    color: #24292e !important;
+}
+
+.hljs-operator {
+    color: #d73a49 !important;
+}
+
+.hljs-punctuation {
+    color: #24292e !important;
+}
+
+/* ダークモードのシンタックスハイライト色 */
+.dark-mode .hljs-keyword {
+    color: #ff7b72 !important;
+}
+
+.dark-mode .hljs-string {
+    color: #a5d6ff !important;
+}
+
+.dark-mode .hljs-comment {
+    color: #8b949e !important;
+}
+
+.dark-mode .hljs-number {
+    color: #79c0ff !important;
+}
+
+.dark-mode .hljs-function {
+    color: #d2a8ff !important;
+}
+
+.dark-mode .hljs-class {
+    color: #d2a8ff !important;
+}
+
+.dark-mode .hljs-variable {
+    color: #ffa657 !important;
+}
+
+.dark-mode .hljs-operator {
+    color: #ff7b72 !important;
+}
+
+.dark-mode .hljs-punctuation {
+    color: #c9d1d9 !important;
+}
+
+/* システムダークモード時のシンタックスハイライト色 */
+@media (prefers-color-scheme: dark) {
+    .hljs-keyword {
+        color: #ff7b72 !important;
+    }
+    
+    .hljs-string {
+        color: #a5d6ff !important;
+    }
+    
+    .hljs-comment {
+        color: #8b949e !important;
+    }
+    
+    .hljs-number {
+        color: #79c0ff !important;
+    }
+    
+    .hljs-function {
+        color: #d2a8ff !important;
+    }
+    
+    .hljs-class {
+        color: #d2a8ff !important;
+    }
+    
+    .hljs-variable {
+        color: #ffa657 !important;
+    }
+    
+    .hljs-operator {
+        color: #ff7b72 !important;
+    }
+    
+    .hljs-punctuation {
+        color: #c9d1d9 !important;
     }
 }
 
@@ -306,85 +508,77 @@
     height: 100% !important;
 }
 
-/* Prism.js カスタムスタイル - より読みやすさを重視したスタイル */
-.toastui-editor-contents pre[class*="language-"] {
-    background: #f2f2f7 !important; /* System Gray 6 */
-    border: 1px solid #c7c7cc !important; /* System Gray 4 */
-    border-radius: 0.5rem !important; /* rounded-lg */
-    padding: 1rem !important; /* space-4 (16px) - より小さく */
-    margin: 0.75rem 0 !important; /* space-3 (12px) - より小さく */
-    margin-left: 1.5rem !important; /* space-6 (24px) - 左側に余白 */
-    margin-right: 1.5rem !important; /* space-6 (24px) - 右側に余白 */
-    overflow-x: auto !important;
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
-    font-size: 0.625rem !important; /* text-xsより小さく (10px) */
-    line-height: 1.6 !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; /* shadow-sm */
-}
-
-.toastui-editor-contents code[class*="language-"] {
-    background: none !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    color: #1d1d1f !important;
-    font-family: inherit !important;
-    font-size: inherit !important;
-}
-
-/* ダークモードでのPrism.js */
-@media (prefers-color-scheme: dark) {
-    .toastui-editor-contents pre[class*="language-"] {
-        background: #2c2c2e !important; /* Dark System Gray 6 */
-        border-color: #3a3a3c !important; /* Dark System Gray 4 */
-    }
-
-    .toastui-editor-contents code[class*="language-"] {
-        color: #ffffff !important;
-    }
-}
-
-/* プレビューエリアのスクロール設定 - Appleデザインに合わせたスタイル */
+/* プレビューエリアのコンテナ */
 #preview {
-    overflow-y: auto !important;
-    height: 100% !important;
-    scrollbar-width: thin !important;
-    scrollbar-color: #c7c7cc #f2f2f7 !important; /* System Gray 4 / System Gray 6 */
+    background-color: transparent;
+    overflow-y: auto;
+    height: 100%;
 }
 
+.dark-mode #preview {
+    background-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+    #preview {
+        background-color: transparent;
+    }
+}
+
+/* スクロールバーのカスタマイズ - Apple Design Rules */
+.toastui-editor-viewer::-webkit-scrollbar,
 #preview::-webkit-scrollbar {
     width: 8px !important;
 }
 
+.toastui-editor-viewer::-webkit-scrollbar-track,
 #preview::-webkit-scrollbar-track {
-    background: #f2f2f7 !important; /* System Gray 6 */
+    background-color: rgba(0, 0, 0, 0.05) !important;
     border-radius: 4px !important;
 }
 
+.toastui-editor-viewer::-webkit-scrollbar-thumb,
 #preview::-webkit-scrollbar-thumb {
-    background: #c7c7cc !important; /* System Gray 4 */
+    background-color: rgba(0, 0, 0, 0.2) !important;
     border-radius: 4px !important;
-    transition: background-color 0.2s ease-in-out !important;
+    transition: background-color 0.2s ease !important;
 }
 
+.toastui-editor-viewer::-webkit-scrollbar-thumb:hover,
 #preview::-webkit-scrollbar-thumb:hover {
-    background: #8e8e93 !important; /* System Gray 3 */
+    background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
-/* ダークモードでのスクロールバー */
+/* ダークモード用スクロールバー */
+.dark-mode .toastui-editor-viewer::-webkit-scrollbar-track,
+.dark-mode #preview::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark-mode .toastui-editor-viewer::-webkit-scrollbar-thumb,
+.dark-mode #preview::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dark-mode .toastui-editor-viewer::-webkit-scrollbar-thumb:hover,
+.dark-mode #preview::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* システムダークモード対応 */
 @media (prefers-color-scheme: dark) {
-    #preview {
-        scrollbar-color: #3a3a3c #2c2c2e !important; /* Dark System Gray 4 / Dark System Gray 6 */
-    }
-
+    .toastui-editor-viewer::-webkit-scrollbar-track,
     #preview::-webkit-scrollbar-track {
-        background: #2c2c2e !important; /* Dark System Gray 6 */
+        background-color: rgba(255, 255, 255, 0.05) !important;
     }
-
+    
+    .toastui-editor-viewer::-webkit-scrollbar-thumb,
     #preview::-webkit-scrollbar-thumb {
-        background: #3a3a3c !important; /* Dark System Gray 4 */
+        background-color: rgba(255, 255, 255, 0.2) !important;
     }
-
+    
+    .toastui-editor-viewer::-webkit-scrollbar-thumb:hover,
     #preview::-webkit-scrollbar-thumb:hover {
-        background: #48484a !important; /* Dark System Gray 3 */
+        background-color: rgba(255, 255, 255, 0.3) !important;
     }
 } 

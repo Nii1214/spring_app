@@ -19,6 +19,20 @@ tailwind.cssで実装できないものに関してはカスタムcssで対応�
 
 # デザインルール
 
+## カスタムcss
+
+### メインCSSファイル
+- **ファイルパス**: `src/main/resources/static/css/style.css`
+- **読み込み方法**: `<link rel="stylesheet" th:href="@{/css/style.css}">`
+- **説明**: Appleデザインルール準拠のカスタムスタイル、コンポーネント、アニメーションを含む
+
+### ファイル構成
+```
+src/main/resources/static/css/
+├── style.css          # メインCSSファイル（Appleデザインルール準拠）
+└── components/        # コンポーネント別CSSファイル（必要に応じて）
+```
+
 ## 1. カラーパレット
 
 ### プライマリカラー

@@ -36,11 +36,13 @@ public class TodoApiController {
     @PostMapping
     public ResponseEntity<Todo> createTodo(@RequestBody Map<String, String> todoData) {
         String title = todoData.get("title");
-        String priority = todoData.get("priority");
-        String status = todoData.get("status");
         
-        todoService.createTodo(title, priority, status);
-        return ResponseEntity.ok().build();
+        // デフォルト値を設定
+        String priority = todoData.getOrDefault("priority", "中");
+        String status = todoData.getOrDefault("status", "未着手");
+        
+        Todo createdTodo = todoService.createTodo(title, priority, status);
+        return ResponseEntity.ok(createdTodo);
     }
 
     @PatchMapping("/{id}/status")

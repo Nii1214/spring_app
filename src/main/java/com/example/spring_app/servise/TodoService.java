@@ -35,12 +35,12 @@ public class TodoService {
     }
 
     //新規タスクの登録メソッド
-    public void createTodo(String title, String priority, String status) {
+    public Todo createTodo(String title, String priority, String status) {
         Todo todo = new Todo();
         todo.setTitle(title);
         todo.setPriority(Todo.Priority.valueOf(priority));
         todo.setStatus(Todo.Status.valueOf(status));
-        todoRepository.save(todo);
+        return todoRepository.save(todo);
     }
 
     //タスクの一覧取得メソッド

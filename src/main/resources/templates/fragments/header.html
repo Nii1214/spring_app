@@ -26,60 +26,63 @@
                         </button>
                     </div>
                 </div>
-                <div id="mobile-menu" class="mobile-menu hidden md:hidden">
-                    <a href="/todo" class="block py-2 px-4 text-gray-500 hover:text-blue-500 transition duration-300">ToDo</a>
-                    <a href="/notes" class="block py-2 px-4 text-gray-500 hover:text-blue-500 transition duration-300">ノート</a>
-                </div>
             </div>
         </nav>
         
+        <!-- オーバーレイ -->
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 opacity-0 invisible md:hidden"></div>
+        
+        <!-- モバイルメニュー（Tailwind CSSのみで実装） -->
+        <div id="mobile-menu" class="fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+            <div class="pt-16 px-4">
+                <a href="/todo" class="block py-3 px-4 text-gray-700 hover:text-blue-500 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-b border-gray-100">ToDo</a>
+                <a href="/notes" class="block py-3 px-4 text-gray-700 hover:text-blue-500 hover:bg-gray-50 rounded-lg transition-colors duration-200 border-b border-gray-100">ノート</a>
+            </div>
+        </div>
+        
         <!-- jQueryを使ったハンバーガーメニューの実装 -->
         <script th:inline="javascript">
-            // jQueryが利用可能かチェック
-            if (typeof $ !== 'undefined') {
-                console.log('jQuery is available');
+            $(function() {
+                const $button = $('.mobile-menu-button');
+                const $menu = $('#mobile-menu');
+                const $overlay = $('#mobile-menu-overlay');
                 
-                // DOMが準備できたら実行
-                $(function() {
-                    console.log('DOM is ready');
-                    
-                    // 要素が存在するかチェック
-                    const $button = $('.mobile-menu-button');
-                    const $menu = $('#mobile-menu');
-                    
-                    console.log('Button found:', $button.length);
-                    console.log('Menu found:', $menu.length);
-                    
-                    if ($button.length && $menu.length) {
-                        // ハンバーガーメニューボタンのクリックイベント
-                        $button.on('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log('Button clicked!');
-                            $menu.toggleClass('hidden');
-                            console.log('Menu hidden:', $menu.hasClass('hidden'));
-                        });
+                if ($button.length && $menu.length && $overlay.length) {
+                    // ハンバーガーメニューボタンのクリックイベント
+                    $button.on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         
-                        // モバイルメニュー内のリンクをクリックした時にメニューを閉じる
-                        $menu.find('a').on('click', function() {
-                            $menu.addClass('hidden');
-                        });
-                        
-                        // 画面サイズが変更された時にメニューを閉じる（デスクトップ表示時）
-                        $(window).on('resize', function() {
-                            if ($(window).width() >= 768) {
-                                $menu.addClass('hidden');
-                            }
-                        });
-                        
-                        console.log('Mobile menu initialized successfully');
-                    } else {
-                        console.error('Required elements not found');
+                        // メニューを表示
+                        $menu.removeClass('translate-x-full').addClass('translate-x-0');
+                        // オーバーレイを表示
+                        $overlay.removeClass('opacity-0 invisible').addClass('opacity-100 visible');
+                    });
+                    
+                    // オーバーレイをクリックした時にメニューを閉じる
+                    $overlay.on('click', function() {
+                        closeMobileMenu();
+                    });
+                    
+                    // モバイルメニュー内のリンクをクリックした時にメニューを閉じる
+                    $menu.find('a').on('click', function() {
+                        closeMobileMenu();
+                    });
+                    
+                    // メニューを閉じる関数
+                    function closeMobileMenu() {
+                        $menu.removeClass('translate-x-0').addClass('translate-x-full');
+                        $overlay.removeClass('opacity-100 visible').addClass('opacity-0 invisible');
                     }
-                });
-            } else {
-                console.error('jQuery is not available');
-            }
+                    
+                    // 画面サイズが変更された時にメニューを閉じる（デスクトップ表示時）
+                    $(window).on('resize', function() {
+                        if ($(window).width() >= 768) {
+                            closeMobileMenu();
+                        }
+                    });
+                }
+            });
         </script>
     </header>
 </body>

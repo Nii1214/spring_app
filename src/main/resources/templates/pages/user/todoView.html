@@ -3,138 +3,261 @@
 <head th:replace="~{fragments/head :: common-head}">
     <!-- 共通のhead部分がここに挿入されます -->
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 dark:bg-gray-900">
     <div th:replace="~{fragments/header :: common-header}"></div>
-    <div class="container mx-auto p-4 max-w-4xl">        
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex flex-row justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold text-gray-700">ToDoリスト</h2>
-                <button id="newTodoBtn" class="group relative inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2.5 px-4 sm:px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out transform hover:-translate-y-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+    
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl">
+        <!-- ページヘッダー -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div class="mb-4 sm:mb-0">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">ToDoリスト</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">タスクを管理して効率的に作業を進めましょう</p>
+                </div>
+                <button id="newTodoBtn" class="btn btn-primary hover-lift">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    <span class="hidden sm:inline ml-2">新規登録</span>
+                    新規タスク
                 </button>
             </div>
-            
-            <!-- タブ -->
-            <div class="border-b border-gray-200 mb-4">
+        </div>
+
+        <!-- メインカード -->
+        <div class="card card-hover animate-fade-in">
+            <!-- タブナビゲーション -->
+            <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
                 <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                    <button id="incomplete-tab" class="border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    <button id="incomplete-tab" class="border-blue-500 text-blue-600 dark:text-blue-400 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
                         未完了
                     </button>
-                    <button id="complete-tab" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                    <button id="complete-tab" class="border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200">
+                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                         完了済み
                     </button>
                 </nav>
             </div>
 
-            <!-- 新規登録モーダル -->
-            <div id="newTodoModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
-                <div class="relative top-20 mx-auto p-4 sm:p-5 border w-[90%] sm:w-96 shadow-lg rounded-md bg-white">
-                    <div class="mt-3">
-                        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Todo登録</h3>
-                        <form id="newTodoForm">
-                            <div class="mb-4">
-                                <label for="title" class="block text-sm font-medium text-gray-700">タイトル</label>
-                                <input type="text" id="title" name="title" required
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            <!-- 未完了のTodo -->
+            <div id="incomplete-todos" class="space-y-4">
+                <div th:if="${#lists.isEmpty(incompleteTodos)}" class="text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">タスクがありません</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">新しいタスクを作成して始めましょう</p>
+                </div>
+                
+                <div th:each="todo : ${incompleteTodos}" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200 animate-fade-in" th:data-todo-id="${todo.id}">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" 
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 todo-checkbox" 
+                               th:value="${todo.id}" 
+                               th:data-todo-id="${todo.id}">
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <h3 class="text-sm font-medium text-gray-900 dark:text-white" th:text="${todo.getTitle()}"></h3>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 完了済みのTodo -->
+            <div id="complete-todos" class="space-y-4 hidden">
+                <div th:if="${#lists.isEmpty(completeTodos)}" class="text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">完了したタスクがありません</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">タスクを完了させるとここに表示されます</p>
+                </div>
+                
+                <div th:each="todo : ${completeTodos}" class="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 animate-fade-in opacity-75" th:data-todo-id="${todo.id}">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" 
+                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 todo-checkbox" 
+                               th:value="${todo.id}" 
+                               th:data-todo-id="${todo.id}"
+                               checked>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <h3 class="text-sm font-medium text-gray-900 dark:text-white line-through" th:text="${todo.getTitle()}"></h3>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新規登録モーダル -->
+        <div id="newTodoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-xl animate-scale-in">
+                    <!-- モーダルヘッダー -->
+                    <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">新しいタスク</h3>
+                        <button id="cancelBtn" class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 focus-ring rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- モーダルボディ -->
+                    <div class="p-6">
+                        <form id="newTodoForm" class="space-y-6">
+                            <div>
+                                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    タスクタイトル
+                                </label>
+                                <input type="text" 
+                                       id="title" 
+                                       name="title" 
+                                       required
+                                       placeholder="タスクのタイトルを入力してください"
+                                       class="input focus-ring">
                             </div>
-                            <div class="mb-4">
-                                <label for="priority" class="block text-sm font-medium text-gray-700">優先度</label>
-                                <select id="priority" name="priority" required
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="高">高</option>
-                                    <option value="中">中</option>
-                                    <option value="低">低</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
-                                <button type="submit"
-                                    class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
-                                    登録
-                                </button>
-                                <button type="button" id="cancelBtn"
-                                    class="w-full sm:w-auto bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded">
+                            
+                            <div class="flex justify-end space-x-3 pt-4">
+                                <button type="button" 
+                                        id="cancelBtn2"
+                                        class="btn btn-secondary">
                                     キャンセル
+                                </button>
+                                <button type="submit" 
+                                        class="btn btn-primary">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    作成
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-
-            <!-- 未完了のTodo -->
-            <div id="incomplete-todos" class="overflow-x-auto">
-                <table id="incompleteTodoTable" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-12"></th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">タイトル</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr th:each="todo : ${incompleteTodos}" class="hover:bg-gray-50">
-                            <td class="px-2 py-4 text-center">
-                                <input type="checkbox" 
-                                       class="form-checkbox h-5 w-5 text-blue-600 todo-checkbox" 
-                                       th:value="${todo.id}" 
-                                       th:data-todo-id="${todo.id}">
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${todo.getTitle()}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 完了済みのTodo -->
-            <div id="complete-todos" class="overflow-x-auto hidden">
-                <table id="completeTodoTable" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-12"></th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">タイトル</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr th:each="todo : ${completeTodos}" class="hover:bg-gray-50">
-                            <td class="px-2 py-4 text-center">
-                                <input type="checkbox" 
-                                       class="form-checkbox h-5 w-5 text-blue-600 todo-checkbox" 
-                                       th:value="${todo.id}" 
-                                       th:data-todo-id="${todo.id}">
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${todo.getTitle()}"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
-    </div>
+    </main>
+
+    <!-- フッター -->
+    <div th:replace="~{fragments/footer :: common-footer}"></div>
 
     <script>
         $(document).ready(function() {
+            // タスクの元の順序を記憶するオブジェクト
+            const originalOrder = {};
+            
+            // 初期化時にタスクの順序を記憶
+            $('#incomplete-todos .flex').each(function(index) {
+                const todoId = $(this).data('todo-id');
+                originalOrder[todoId] = index;
+            });
+
             // タブ切り替え
             $('#incomplete-tab').click(function() {
-                $(this).addClass('border-blue-500 text-blue-600').removeClass('border-transparent text-gray-500');
-                $('#complete-tab').addClass('border-transparent text-gray-500').removeClass('border-blue-500 text-blue-600');
+                $(this).addClass('border-blue-500 text-blue-600 dark:text-blue-400').removeClass('border-transparent text-gray-500 dark:text-gray-400');
+                $('#complete-tab').addClass('border-transparent text-gray-500 dark:text-gray-400').removeClass('border-blue-500 text-blue-600 dark:text-blue-400');
                 $('#incomplete-todos').removeClass('hidden');
                 $('#complete-todos').addClass('hidden');
             });
 
             $('#complete-tab').click(function() {
-                $(this).addClass('border-blue-500 text-blue-600').removeClass('border-transparent text-gray-500');
-                $('#incomplete-tab').addClass('border-transparent text-gray-500').removeClass('border-blue-500 text-blue-600');
+                $(this).addClass('border-blue-500 text-blue-600 dark:text-blue-400').removeClass('border-transparent text-gray-500 dark:text-gray-400');
+                $('#incomplete-tab').addClass('border-transparent text-gray-500 dark:text-gray-400').removeClass('border-blue-500 text-blue-600 dark:text-blue-400');
                 $('#complete-todos').removeClass('hidden');
                 $('#incomplete-todos').addClass('hidden');
             });
+
+            // タブの内容が空かどうかをチェックする関数
+            function checkEmptyTabs() {
+                const incompleteCount = $('#incomplete-todos .flex').length;
+                const completeCount = $('#complete-todos .flex').length;
+                
+                // 未完了タスクが空の場合
+                if (incompleteCount === 0) {
+                    $('#incomplete-todos .text-center').removeClass('hidden');
+                } else {
+                    $('#incomplete-todos .text-center').addClass('hidden');
+                }
+                
+                // 完了タスクが空の場合
+                if (completeCount === 0) {
+                    $('#complete-todos .text-center').removeClass('hidden');
+                } else {
+                    $('#complete-todos .text-center').addClass('hidden');
+                }
+            }
+
+            // 元の位置に戻す関数
+            function restoreOriginalPosition($todoItem, todoId) {
+                const originalIndex = originalOrder[todoId];
+                if (originalIndex !== undefined) {
+                    const $incompleteTodos = $('#incomplete-todos');
+                    const $existingItems = $incompleteTodos.find('.flex');
+                    
+                    if (originalIndex >= $existingItems.length) {
+                        // 元の位置が現在のリストの長さを超える場合は最後に追加
+                        $todoItem.appendTo($incompleteTodos);
+                    } else {
+                        // 元の位置に挿入
+                        $existingItems.eq(originalIndex).before($todoItem);
+                    }
+                } else {
+                    // 元の位置が不明な場合は最後に追加
+                    $todoItem.appendTo($incompleteTodos);
+                }
+            }
 
             // チェックボックスの変更イベントハンドラ
             $(document).on('change', '.todo-checkbox', function() {
                 const $checkbox = $(this);
                 const todoId = $checkbox.data('todo-id');
                 const isCompleted = $checkbox.prop('checked');
-                const $row = $checkbox.closest('tr');
+                
+                // データ属性を使用して特定のタスクのカードを取得
+                const $todoItem = $(`div[data-todo-id="${todoId}"]`);
+
+                console.log('チェックボックス変更:', {
+                    todoId: todoId,
+                    isCompleted: isCompleted,
+                    todoItem: $todoItem.length > 0 ? 'カード要素を取得しました' : 'カード要素が見つかりません',
+                    todoItemClasses: $todoItem.attr('class'),
+                    todoItemCount: $todoItem.length
+                });
+
+                // カード要素が見つからない場合は処理を中止
+                if ($todoItem.length === 0) {
+                    console.error('カード要素が見つかりません');
+                    $checkbox.prop('checked', !isCompleted);
+                    return;
+                }
 
                 $.ajax({
                     url: `/api/todos/${todoId}/status`,
@@ -142,63 +265,70 @@
                     contentType: 'application/json',
                     data: JSON.stringify(isCompleted),
                     success: function() {
+                        console.log('API呼び出し成功');
+                        
                         // 成功時の処理
                         if (isCompleted) {
-                            // 完了タブに移動
-                            $row.detach().appendTo('#completeTodoTable tbody');
+                            console.log('タスクを完了タブに移動中...');
+                            // 完了タブに移動（一番上に追加）
+                            $todoItem.fadeOut(300, function() {
+                                $(this).detach().prependTo('#complete-todos');
+                                $(this).addClass('opacity-75');
+                                $(this).find('h3').addClass('line-through');
+                                $(this).find('input').removeClass('text-blue-600 focus:ring-blue-500').addClass('text-green-600 focus:ring-green-500');
+                                $(this).fadeIn(300);
+                            });
+                            
+                            // 完了タブが非表示の場合は未完了タブに移動したことを視覚的に示す
+                            if ($('#complete-todos').hasClass('hidden')) {
+                                console.log('完了タブが非表示のため、タスクが完了タブに移動しました');
+                            }
                         } else {
-                            // 未完了タブに移動
-                            $row.detach().appendTo('#incompleteTodoTable tbody');
+                            console.log('タスクを未完了タブに移動中...');
+                            // 未完了タブに移動（元の位置に戻す）
+                            $todoItem.fadeOut(300, function() {
+                                $(this).detach();
+                                restoreOriginalPosition($(this), todoId);
+                                $(this).removeClass('opacity-75');
+                                $(this).find('h3').removeClass('line-through');
+                                $(this).find('input').removeClass('text-green-600 focus:ring-green-500').addClass('text-blue-600 focus:ring-blue-500');
+                                
+                                // デザインを未完了タスク用に変更
+                                $(this).removeClass('bg-gray-50 dark:bg-gray-800/50').addClass('bg-white dark:bg-gray-800');
+                                
+                                $(this).fadeIn(300);
+                            });
+                            
+                            // 未完了タブが非表示の場合は完了タブに移動したことを視覚的に示す
+                            if ($('#incomplete-todos').hasClass('hidden')) {
+                                console.log('未完了タブが非表示のため、タスクが未完了タブに移動しました');
+                            }
                         }
+                        
+                        // タブの内容をチェック
+                        checkEmptyTabs();
+                        console.log('タブ移動完了');
                     },
                     error: function() {
                         // エラー時の処理
+                        console.error('API呼び出し失敗');
                         alert('更新に失敗しました');
                         $checkbox.prop('checked', !isCompleted);
                     }
                 });
             });
 
-            // DataTable初期化
-            $('#incompleteTodoTable').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ja.json'
-                },
-                searching: false,
-                paging: false,
-                info: false,
-                dom: 'rt',
-                autoWidth: false,
-                columnDefs: [
-                    { width: '48px', targets: 0 }
-                ]
-            });
-
-            $('#completeTodoTable').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ja.json'
-                },
-                searching: false,
-                paging: false,
-                info: false,
-                dom: 'rt',
-                autoWidth: false,
-                columnDefs: [
-                    { width: '48px', targets: 0 }
-                ]
-            });
-
             // モーダル関連の処理
             const $modal = $('#newTodoModal');
-            const $modalContent = $modal.find('.relative'); // モーダルの内容部分
             const $newTodoBtn = $('#newTodoBtn');
-            const $cancelBtn = $('#cancelBtn');
+            const $cancelBtn = $('#cancelBtn, #cancelBtn2');
             const $form = $('#newTodoForm');
 
             // モーダルを開く
             $newTodoBtn.on('click', function(e) {
                 e.stopPropagation();
                 $modal.removeClass('hidden');
+                $('#title').focus();
             });
 
             // モーダルを閉じる関数
@@ -215,8 +345,14 @@
 
             // モーダルの背景（オーバーレイ）をクリックした時に閉じる
             $modal.on('click', function(e) {
-                // クリックされた要素がモーダルの内容部分でない場合
-                if (!$(e.target).closest('.relative').length) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // ESCキーでモーダルを閉じる
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape' && !$modal.hasClass('hidden')) {
                     closeModal();
                 }
             });
@@ -226,7 +362,7 @@
                 e.preventDefault();
                 const formData = {
                     title: $('#title').val(),
-                    priority: $('#priority').val(),
+                    priority: '中', // デフォルト値
                     status: '未着手'
                 };
 

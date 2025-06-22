@@ -58,6 +58,11 @@
     --color-text-primary: #ffffff;
     --color-text-secondary: #8e8e93;
     --color-border: #38383a;
+    
+    /* ダークモード用シャドウ */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -133,6 +138,22 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none !important;
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+  .btn-secondary {
+    background-color: #374151;
+    color: var(--color-text-primary);
+  }
+  
+  .btn-secondary:hover {
+    background-color: #4b5563;
+  }
+  
+  .btn-outline:hover {
+    background-color: rgba(0, 122, 255, 0.2);
+  }
 }
 
 /* ========================================
@@ -223,6 +244,14 @@ body {
   color: var(--color-primary);
   background-color: rgba(0, 122, 255, 0.1);
   font-weight: 500;
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+  .nav-item:hover,
+  .nav-item-active {
+    background-color: rgba(0, 122, 255, 0.2);
+  }
 }
 
 /* ========================================
@@ -413,4 +442,83 @@ body {
 @media (max-width: 1024px) {
   .lg\:hidden { display: none; }
   .lg\:block { display: block; }
+}
+
+/* ========================================
+   ダークモード専用ユーティリティ
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  /* ダークモード時の背景色調整 */
+  .dark\:bg-gray-900 {
+    background-color: var(--color-bg-secondary);
+  }
+  
+  /* ダークモード時のテキスト色調整 */
+  .dark\:text-white {
+    color: var(--color-text-primary);
+  }
+  
+  .dark\:text-gray-300 {
+    color: var(--color-text-primary);
+  }
+  
+  .dark\:text-gray-400 {
+    color: var(--color-text-secondary);
+  }
+  
+  .dark\:text-gray-500 {
+    color: var(--color-text-secondary);
+  }
+  
+  /* ダークモード時のボーダー色調整 */
+  .dark\:border-gray-600 {
+    border-color: var(--color-border);
+  }
+  
+  .dark\:border-gray-800 {
+    border-color: var(--color-border);
+  }
+  
+  /* ダークモード時の背景色調整 */
+  .dark\:bg-gray-800 {
+    background-color: var(--color-bg-primary);
+  }
+  
+  .dark\:bg-gray-700 {
+    background-color: var(--color-bg-primary);
+  }
+  
+  /* ダークモード時のリンク色調整 */
+  .dark\:text-blue-400 {
+    color: var(--color-primary);
+  }
+  
+  .dark\:hover\:text-blue-300:hover {
+    color: #4da6ff;
+  }
+  
+  /* ダークモード時のエラー・成功メッセージ調整 */
+  .dark\:bg-red-900\/20 {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  
+  .dark\:bg-green-900\/20 {
+    background-color: rgba(34, 197, 94, 0.1);
+  }
+  
+  .dark\:border-red-800 {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+  
+  .dark\:border-green-800 {
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+  
+  .dark\:text-red-400 {
+    color: #f87171;
+  }
+  
+  .dark\:text-green-400 {
+    color: #4ade80;
+  }
 } 

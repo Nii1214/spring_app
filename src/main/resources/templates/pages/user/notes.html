@@ -3,46 +3,100 @@
 <head th:replace="~{fragments/head :: common-head}">
     <!-- 共通のhead部分がここに挿入されます -->
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 dark:bg-gray-900">
     <div th:replace="~{fragments/header :: common-header}"></div>
     
-    <div class="container mx-auto p-4">
-        <div class="flex">
-            <!-- サイドバー -->
-            <div class="w-64 bg-white rounded-lg shadow-md p-4 mr-4 flex flex-col h-[calc(100vh-8rem)]">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-medium text-gray-700">ノート一覧</h2>
-                    <button onclick="createNewNote()" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl h-[calc(100vh-8rem)]">
+        <!-- ページヘッダー -->
+        <div class="mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div class="mb-4 sm:mb-0">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">ノート</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">アイデアやメモを整理して効率的に管理しましょう</p>
                 </div>
-                <div class="relative">
-                    <input type="text" 
-                           placeholder="ノートを検索..." 
-                           class="w-full px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           onkeyup="filterNotes(this.value)">
-                </div>
-                <div class="mt-4 flex-1 overflow-y-auto">
-                    <ul id="noteList" class="space-y-1">
-                        <!-- ノート一覧がここに動的に追加されます -->
-                    </ul>
-                </div>
+                <button onclick="createNewNote()" class="btn btn-primary hover-lift">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    新規ノート
+                </button>
             </div>
-            
-            <!-- メインコンテンツ -->
-            <div class="flex-1 bg-white rounded-lg shadow-md p-6 h-[calc(100vh-8rem)] overflow-y-auto">
-                <div id="preview" class="prose max-w-none">
-                    <!-- ノートの内容がここに表示されます -->
+        </div>
+
+        <!-- メインカード -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden h-[calc(100vh-16rem)]">
+            <div class="flex h-full">
+                <!-- サイドバー -->
+                <div class="w-80 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+                    <!-- 検索バー -->
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input type="text" 
+                                   placeholder="ノートを検索..." 
+                                   class="input pl-10"
+                                   onkeyup="filterNotes(this.value)">
+                        </div>
+                    </div>
+                    
+                    <!-- ノート一覧 -->
+                    <div class="flex-1 overflow-y-auto">
+                        <div class="p-2">
+                            <ul id="noteList" class="space-y-1">
+                                <!-- ノート一覧がここに動的に追加されます -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- メインコンテンツ -->
+                <div class="flex-1 flex flex-col">
+                    <!-- エディターヘッダー -->
+                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">ノートプレビュー</h2>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-500 dark:text-gray-400">Markdown対応</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- エディターエリア -->
+                    <div class="flex-1 overflow-hidden">
+                        <div id="preview" class="h-full w-full">
+                            <!-- ノートの内容がここに表示されます -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <!-- フッター -->
+    <div th:replace="~{fragments/footer :: common-footer}"></div>
 
     <!-- Toast UI Editor -->
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/3.0.0/toastui-editor.min.css" />
     <script src="https://uicdn.toast.com/editor/3.0.0/toastui-editor-all.min.js"></script>
+
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-theme" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <!-- Toast UI カスタムスタイル -->
+    <link rel="stylesheet" th:href="@{/css/toast-ui-custom.css}" />
 
     <script th:inline="javascript">
         // ユーザーIDをサーバーサイドから取得
@@ -62,6 +116,43 @@
             readOnly: true, // 読み取り専用モード
             viewer: true // ビューアーモードで初期化
         });
+
+        // Prism.jsを適用する関数
+        function applySyntaxHighlighting() {
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        }
+
+        // ダークモードテーマを切り替える関数
+        function switchPrismTheme() {
+            const prismTheme = document.getElementById('prism-theme');
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // ダークモード
+                prismTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
+            } else {
+                // ライトモード
+                prismTheme.href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css';
+            }
+        }
+
+        // マークダウンコンテンツを設定する際にシンタックスハイライトを適用
+        function setMarkdownWithHighlighting(content) {
+            editor.setMarkdown(content);
+            // 少し遅延させてからシンタックスハイライトを適用
+            setTimeout(() => {
+                switchPrismTheme();
+                applySyntaxHighlighting();
+            }, 100);
+        }
+
+        // ダークモード変更を監視
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                switchPrismTheme();
+                applySyntaxHighlighting();
+            });
+        }
 
         function loadNotes() {
             fetch(`/api/notes?userId=${userId}`)
@@ -102,19 +193,18 @@
             const indentStyle = `margin-left: ${level * 1.5}rem`;
             
             noteLi.innerHTML = `
-                <div class="flex items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors duration-200 ${currentNoteId === note.id ? 'bg-gray-100' : ''}" style="${indentStyle}" data-note-id="${note.id}">
+                <div class="flex items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 ${currentNoteId === note.id ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700' : ''}" style="${indentStyle}" data-note-id="${note.id}">
                     ${hasChildren ? `
-                        <button class="text-gray-400 hover:text-gray-600 transition-colors duration-200 mr-1" onclick="toggleNote(${note.id}, event)">
+                        <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200 mr-2 focus-ring rounded" onclick="toggleNote(${note.id}, event)">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform ${isExpanded ? 'rotate-90' : ''}" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                    ` : '<div class="w-6"></div>'}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                        <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                    ` : '<div class="w-6 mr-2"></div>'}
+                    <svg class="w-4 h-4 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
-                    <span class="text-sm text-gray-700 truncate">${note.title}</span>
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate flex-1">${note.title}</span>
                 </div>
             `;
 
@@ -163,22 +253,22 @@
 
                     // タイトルと日時情報を追加
                     const content = `# ${note.title}\n\n` +
-                        `作成日時: ${createdAt}\n` +
-                        `更新日時: ${updatedAt}\n\n` +
+                        `**作成日時:** ${createdAt}\n` +
+                        `**更新日時:** ${updatedAt}\n\n` +
                         `---\n\n` +
                         note.content;
 
                     // Toast UI Editor にコンテンツを設定
-                    editor.setMarkdown(content);
+                    setMarkdownWithHighlighting(content);
 
                     // アクティブなノートをハイライト
                     document.querySelectorAll('#noteList li div').forEach(item => {
-                        item.classList.remove('bg-gray-100');
+                        item.classList.remove('bg-blue-50', 'dark:bg-blue-900/20', 'border', 'border-blue-200', 'dark:border-blue-700');
                     });
                     // クリックされたノートをハイライト
                     const clickedNote = document.querySelector(`#noteList li div[data-note-id="${id}"]`);
                     if (clickedNote) {
-                        clickedNote.classList.add('bg-gray-100');
+                        clickedNote.classList.add('bg-blue-50', 'dark:bg-blue-900/20', 'border', 'border-blue-200', 'dark:border-blue-700');
                     }
                 });
         }

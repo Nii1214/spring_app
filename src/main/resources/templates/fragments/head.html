@@ -6,6 +6,24 @@
     <title>NoteApp</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind CSS ダークモード設定
+        tailwind.config = {
+            darkMode: 'media', // システム設定に従う
+            theme: {
+                extend: {
+                    colors: {
+                        // Appleデザインカラー
+                        'apple-blue': '#007AFF',
+                        'apple-purple': '#5856D6',
+                        'apple-red': '#FF3B30',
+                        'apple-green': '#34C759',
+                        'apple-orange': '#FF9500',
+                    }
+                }
+            }
+        }
+    </script>
     <!-- カスタムCSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <!-- jQuery -->

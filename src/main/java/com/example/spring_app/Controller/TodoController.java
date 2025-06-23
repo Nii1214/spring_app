@@ -22,6 +22,6 @@ public class TodoController {
         List<Todo> completeTodos = todoService.getCompleteTodos();
         model.addAttribute("incompleteTodos", incompleteTodos);
         model.addAttribute("completeTodos", completeTodos);
-        return "pages/user/todoView";
+        return "pages/todo/list";
     }
 }

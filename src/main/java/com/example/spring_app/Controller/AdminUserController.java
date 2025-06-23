@@ -28,7 +28,7 @@ public class AdminUserController {
         // ユーザーリストを取得してビューに渡す
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "pages/admin/adminUserView";
+        return "pages/adminUserView";
     }
 
     @PostMapping("/admin/register")

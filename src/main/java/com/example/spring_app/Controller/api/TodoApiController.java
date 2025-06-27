@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.spring_app.entity.Todo;
-import com.example.spring_app.servise.TodoService;
+import com.example.spring_app.service.TodoService;
 
 import java.util.List;
 import java.util.Map;
@@ -36,11 +36,11 @@ public class TodoApiController {
     @PostMapping
     public ResponseEntity<Todo> createTodo(@RequestBody Map<String, String> todoData) {
         String title = todoData.get("title");
-        
+
         // デフォルト値を設定
         String priority = todoData.getOrDefault("priority", "中");
         String status = todoData.getOrDefault("status", "未着手");
-        
+
         Todo createdTodo = todoService.createTodo(title, priority, status);
         return ResponseEntity.ok(createdTodo);
     }
@@ -67,4 +67,4 @@ public class TodoApiController {
         todoService.deleteTodo(id);
         return ResponseEntity.ok().build();
     }
-} 
+}

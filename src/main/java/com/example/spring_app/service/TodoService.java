@@ -1,4 +1,4 @@
-package com.example.spring_app.servise;
+package com.example.spring_app.service;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.example.spring_app.repository.TodoRepository;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    //コンストラクタ
+    // コンストラクタ
     public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
@@ -29,12 +29,12 @@ public class TodoService {
     // Todoのステータスを更新
     public void updateTodoStatus(Integer id, boolean completed) {
         Todo todo = todoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new RuntimeException("Todo not found"));
         todo.setStatus(completed ? Todo.Status.完了 : Todo.Status.未着手);
         todoRepository.save(todo);
     }
 
-    //新規タスクの登録メソッド
+    // 新規タスクの登録メソッド
     public Todo createTodo(String title, String priority, String status) {
         Todo todo = new Todo();
         todo.setTitle(title);
@@ -43,7 +43,7 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    //タスクの一覧取得メソッド
+    // タスクの一覧取得メソッド
     public List<Todo> getAllTodos() {
         return todoRepository.findAll();
     }
@@ -51,14 +51,14 @@ public class TodoService {
     // タスクの削除メソッド
     public void deleteTodo(Integer id) {
         Todo todo = todoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new RuntimeException("Todo not found"));
         todoRepository.delete(todo);
     }
 
     // タスクのタイトル更新メソッド
     public void updateTodoTitle(Integer id, String title) {
         Todo todo = todoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Todo not found"));
+                .orElseThrow(() -> new RuntimeException("Todo not found"));
         todo.setTitle(title);
         todoRepository.save(todo);
     }

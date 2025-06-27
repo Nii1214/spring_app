@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import java.util.List;
 
 import com.example.spring_app.entity.Todo;
-import com.example.spring_app.servise.TodoService;
+import com.example.spring_app.service.TodoService;
 
 @Controller
 public class TodoController {

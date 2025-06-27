@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.spring_app.entity.User;
-import com.example.spring_app.servise.UserService;
+import com.example.spring_app.service.UserService;
 
 // http://localhost:8080/adminuser
 
@@ -57,4 +57,3 @@ public class AdminUserController {
     }
 
 }
-
